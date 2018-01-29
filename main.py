@@ -21,7 +21,10 @@ class info_systeme():
         self.nom_photo_jour = 'nombre_photo_jour'
    
     def set_date(self):
-        
+        self.get_date()
+        if (self.date_systeme != self.date_config):
+            self.date_config = self.date_systeme
+            modif.val_photo_jour = 0
    
     def get_date(self):
         self.date_config = config.get(self.nom_section_defaut ,self.nom_date)
@@ -43,15 +46,12 @@ def photo_mov():
     exec(open('photo.py').read())
     modif.get_date();
     modif.get_valeur();
-##    if (modif.date_systeme != modif.date_config):
-##        modif.val_photo_jour = 0
     modif.ecrire_config(modif.val_photo_total,modif.nom_photo_total)
     modif.ecrire_config(modif.val_photo_jour,modif.nom_photo_jour)
     time.sleep(2)
 
 modif=info_systeme()
-while True:
-    
+while True:    
     photo_mov()
     time.sleep(5)
     
