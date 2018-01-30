@@ -35,14 +35,14 @@ class photo(info_systeme):
 class date(info_systeme):
     
     def get_date(self):
-    self.date_config = config.get(self.nom_section_defaut ,self.nom_date)
-    self.date_systeme = str(datetime.date.today())
+        self.date_config = config.get(self.nom_section_defaut ,self.nom_date)
+        self.date_systeme = str(datetime.date.today())
     
     def set_date(self):
-    self.get_date()
-    if (self.date_systeme != self.date_config):
-        self.date_config = self.date_systeme
-    modif.val_photo_jour = 0
+        self.get_date()
+        if (self.date_systeme != self.date_config):
+            self.date_config = self.date_systeme
+        modif.val_photo_jour = 0
     
 def photo_mov():
     print ("Mouvement detecter") 
