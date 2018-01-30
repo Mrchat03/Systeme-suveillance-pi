@@ -19,28 +19,31 @@ class info_systeme():
         self.nom_date = 'date'
         self.nom_photo_total = 'nombre_photo_total'
         self.nom_photo_jour = 'nombre_photo_jour'
-   
-    def set_date(self):
-        self.get_date()
-        if (self.date_systeme != self.date_config):
-            self.date_config = self.date_systeme
-            modif.val_photo_jour = 0
-   
-    def get_date(self):
-        self.date_config = config.get(self.nom_section_defaut ,self.nom_date)
-        self.date_systeme = str(datetime.date.today())
-    
-    def get_valeur(self):
-        self.val_photo_total = config.getint(self.nom_section_photo,self.nom_photo_total)
-        self.val_photo_jour = config.getint(self.nom_section_photo,self.nom_photo_jour)
-    
+          
     def ecrire_config(self,val,nom):
         val += 1;
         val = str(val)
         config.set(self.nom_section_photo,nom,val)
         with open('config_fichier.cfg', 'w') as config_fichier:
             config.write(config_fichier)       
-
+class photo(info_systeme):
+    
+    def get_valeur(self):
+        self.val_photo_total = config.getint(self.nom_section_photo,self.nom_photo_total)
+        self.val_photo_jour = config.getint(self.nom_section_photo,self.nom_photo_jour)
+    
+class date(info_systeme):
+    
+    def get_date(self):
+    self.date_config = config.get(self.nom_section_defaut ,self.nom_date)
+    self.date_systeme = str(datetime.date.today())
+    
+    def set_date(self):
+    self.get_date()
+    if (self.date_systeme != self.date_config):
+        self.date_config = self.date_systeme
+    modif.val_photo_jour = 0
+    
 def photo_mov():
     print ("Mouvement detecter") 
     exec(open('photo.py').read())
