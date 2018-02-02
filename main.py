@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import time,datetime,configparser
+import time,datetime,configparser,picamera
 
 config = configparser.ConfigParser()
 config.read_file(open('config_fichier.cfg'))
@@ -65,7 +65,7 @@ class Date(info_systeme):
             self.ecrire_config_photo(self.nom_photo_jour,self.val_photo_jour)
             self.ecrire_config_date(self.nom_date,self.date_config)
     
-def photo_mov():
+def photo_mov(self):
     
     exec(open('photo.py').read())
     modif = Date()
@@ -78,13 +78,13 @@ def photo_mov():
     
 def main():
     #GPIO
-    GPIO.setmode(GPIO.BOARD)
+    
+    GPIO.setmode(GPIO.BCM)
     capteur=7
     GPIO.setup(capteur, GPIO.IN)
+    GPIO.add_event_detect(capteur, GPIO.RISING, callback=photo_mov, bouncetime=50)
     while True:
-      if GPIO.input(capteur):
-            photo_mov()
-        
+        time.sleep(0.2) 
 if __name__=='__main__':
     main()
     
