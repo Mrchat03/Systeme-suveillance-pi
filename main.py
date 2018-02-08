@@ -4,6 +4,10 @@ import time,datetime,configparser,picamera
 config = configparser.ConfigParser()
 config.read_file(open('config_fichier.cfg'))
 
+
+data = configparser.ConfigParser()
+data.read_file(open('data_fichier.cfg'))
+
 class info_systeme():
     
     nom_section_photo = 'PHOTO'
@@ -16,21 +20,21 @@ class info_systeme():
     nom_frames = 'frame'
     
     def get_valeur(self):
-        self.val_photo_total = config.getint(self.nom_section_photo,self.nom_photo_total)
-        self.val_photo_jour = config.getint(self.nom_section_photo,self.nom_photo_jour)
+        self.val_photo_total = data.getint(self.nom_section_photo,self.nom_photo_total)
+        self.val_photo_jour = data.getint(self.nom_section_photo,self.nom_photo_jour)
         
     def ecrire_config_photo(self,nom,val):
         val += 1;
         val = str(val)
-        config.set(self.nom_section_photo,nom,val)
-        with open('config_fichier.cfg', 'w') as config_fichier:
-            config.write(config_fichier)
+        data.set(self.nom_section_photo,nom,val)
+        with open('data_fichier.cfg', 'w') as config_fichier:
+            data.write(config_fichier)
     
     def ecrire_config_date(self,nom,val):
-        config.set(self.nom_section_defaut,nom,val)
+        data.set(self.nom_section_defaut,nom,val)
         val = str(val)
-        with open('config_fichier.cfg', 'w') as config_fichier:
-            config.write(config_fichier)
+        with open('data_fichier.cfg', 'w') as config_fichier:
+            data.write(config_fichier)
             
 class Photo(info_systeme):
     
@@ -54,7 +58,7 @@ class Photo(info_systeme):
 class Date(info_systeme):
     
     def get_date(self):
-        self.date_config = config.get(self.nom_section_defaut ,self.nom_date)
+        self.date_config = data.get(self.nom_section_defaut ,self.nom_date)
         self.date_systeme = str(datetime.date.today())
     
     def set_date(self):
@@ -65,7 +69,7 @@ class Date(info_systeme):
             self.ecrire_config_photo(self.nom_photo_jour,self.val_photo_jour)
             self.ecrire_config_date(self.nom_date,self.date_config)
     
-def photo_mov(self):
+def photo_mov():
     
     exec(open('photo.py').read())
     modif = Date()
@@ -82,8 +86,9 @@ def main():
     GPIO.setmode(GPIO.BCM)
     capteur=7
     GPIO.setup(capteur, GPIO.IN)
-    GPIO.add_event_detect(capteur, GPIO.RISING, callback=photo_mov, bouncetime=50)
+    #GPIO.add_event_detect(capteur, GPIO.RISING, callback=photo_mov, bouncetime=50)
     while True:
+        photo_mov()
         time.sleep(0.2) 
 if __name__=='__main__':
     main()
