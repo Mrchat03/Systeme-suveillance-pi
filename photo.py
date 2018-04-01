@@ -1,8 +1,6 @@
 import configparser,picamera,time
 
-def main():
-    config = configparser.ConfigParser()
-    config.read_file(open('config_fichier.cfg'))  
+def main(): 
     photo = Photo()
 
     with picamera.PiCamera() as camera:
